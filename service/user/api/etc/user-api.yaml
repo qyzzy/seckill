@@ -1,0 +1,8 @@
+Name: user-api
+Host: localhost
+Port: 6666
+Mysql:
+  DataSource: root:45568769zby@tcp(127.0.0.1:3306)/seckill?charset=utf8mb4
+CacheRedis:
+  - Host: 127.0.0.1:6379
+    Type: node
