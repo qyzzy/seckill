@@ -40,7 +40,7 @@ type (
 
 	User struct {
 		Id          int64          `db:"id"`
-		Name        sql.NullString `db:"name"`
+		Name        string         `db:"name"`
 		Age         sql.NullInt64  `db:"age"`
 		Email       string         `db:"email"`
 		PhoneNumber string         `db:"phone_number"`
