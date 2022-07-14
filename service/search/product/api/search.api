@@ -1,0 +1,27 @@
+type (
+	SearchReq {
+		Id int64 `json:"id"`
+	}
+
+	SearchReply {
+		Name        string  `json:"name"`
+		Price       float64 `json:"price"`
+		Stock       int64   `json:"stock"`
+		TypeId      int64   `json:"typeId"`
+		SalesVolume int64   `json:"salesVolume"`
+		SpuId       int64   `json:"spuId"`
+	}
+)
+
+@server(
+	jwt: Auth
+)
+service search-api {
+	@handler search
+	get /search/product (SearchReq) returns (SearchReply)
+}
+
+service search-api {
+	@handler ping
+	get /search/ping
+}

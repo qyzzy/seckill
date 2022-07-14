@@ -1,4 +1,4 @@
-module product_service
+module product-search-service
 
 go 1.16
 

@@ -2,10 +2,9 @@ package logic
 
 import (
 	"context"
-	"fmt"
 
-	"product_service/rpc/internal/svc"
-	"product_service/rpc/types/product"
+	"product-search-service/rpc/internal/svc"
+	"product-search-service/rpc/types/product"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -25,19 +24,7 @@ func NewGetProductLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetPro
 }
 
 func (l *GetProductLogic) GetProduct(in *product.IdReq) (*product.ProductInfoReply, error) {
-	one, err := l.svcCtx.ProductModel.FindOne(l.ctx, in.Id)
-	fmt.Println(one, err)
-	if err != nil {
-		return nil, err
-	}
+	// todo: add your logic here and delete this line
 
-	return &product.ProductInfoReply{
-		Id:          one.Id,
-		Name:        one.Name,
-		Price:       one.Price,
-		Stock:       one.Stock,
-		TypeId:      one.TypeId,
-		SalesVolume: one.SalesVolume,
-		SpuId:       one.SpuId,
-	}, nil
+	return &product.ProductInfoReply{}, nil
 }

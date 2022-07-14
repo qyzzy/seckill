@@ -4,10 +4,10 @@ import (
 	"flag"
 	"fmt"
 
-	"product_service/rpc/internal/config"
-	"product_service/rpc/internal/server"
-	"product_service/rpc/internal/svc"
-	"product_service/rpc/types/product"
+	"product-search-service/rpc/internal/config"
+	"product-search-service/rpc/internal/server"
+	"product-search-service/rpc/internal/svc"
+	"product-search-service/rpc/types/product"
 
 	"github.com/zeromicro/go-zero/core/conf"
 	"github.com/zeromicro/go-zero/core/service"
@@ -34,6 +34,7 @@ func main() {
 		}
 	})
 	defer s.Stop()
+
 	fmt.Printf("Starting rpc server at %s...\n", c.ListenOn)
 	s.Start()
 }
