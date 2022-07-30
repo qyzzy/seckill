@@ -1,0 +1,28 @@
+syntax = "proto3";
+import "product.proto";
+
+package product;
+
+option go_package = "./category";
+
+message CategoryRequest {
+  int64 cursor = 1;
+  int64 ps = 2;
+  string category = 3;
+  string sort = 4;
+}
+
+message CategoryResponse {
+  repeated ProductInfo products = 1;
+  bool isEnd = 2;
+  int64 lastVal = 3;
+}
+
+message Category {
+  int64 id = 1;
+  string name = 2;
+}
+
+service category {
+  rpc getProductByCategory(CategoryRequest) returns(CategoryResponse);
+}

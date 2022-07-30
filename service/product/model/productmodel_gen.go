@@ -7,6 +7,7 @@ import (
 	"database/sql"
 	"fmt"
 	"strings"
+	"time"
 
 	"github.com/zeromicro/go-zero/core/stores/builder"
 	"github.com/zeromicro/go-zero/core/stores/cache"
@@ -38,15 +39,19 @@ type (
 	}
 
 	Product struct {
-		Id          int64          `db:"id"`
-		Name        string         `db:"name"`
-		Price       float64        `db:"price"`
-		Stock       int64          `db:"stock"`
-		Image       sql.NullString `db:"image"`
-		Status      int64          `db:"status"`
-		TypeId      int64          `db:"type_id"`
-		SalesVolume int64          `db:"sales_volume"`
-		SpuId       int64          `db:"spu_id"`
+		Id          int64        `db:"id"`
+		Name        string       `db:"name"`
+		Description string       `db:"description"`
+		Price       float64      `db:"price"`
+		Stock       int64        `db:"stock"`
+		Image       string       `db:"image"`
+		CategoryId  int64        `db:"category_id"`
+		SpuId       int64        `db:"spu_id"`
+		Status      int64        `db:"status"`
+		SalesVolume int64        `db:"sales_volume"`
+		CreateTime  time.Time    `db:"create_time"`
+		UpdateTime  sql.NullTime `db:"update_time"`
+		DeleteTime  sql.NullTime `db:"delete_time"`
 	}
 )
 
@@ -86,8 +91,8 @@ func (m *defaultProductModel) FindOne(ctx context.Context, id int64) (*Product, 
 func (m *defaultProductModel) Insert(ctx context.Context, data *Product) (sql.Result, error) {
 	seckillProductIdKey := fmt.Sprintf("%s%v", cacheSeckillProductIdPrefix, data.Id)
 	ret, err := m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
-		query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?, ?, ?, ?, ?, ?)", m.table, productRowsExpectAutoSet)
-		return conn.ExecCtx(ctx, query, data.Name, data.Price, data.Stock, data.Image, data.Status, data.TypeId, data.SalesVolume, data.SpuId)
+		query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", m.table, productRowsExpectAutoSet)
+		return conn.ExecCtx(ctx, query, data.Name, data.Description, data.Price, data.Stock, data.Image, data.CategoryId, data.SpuId, data.Status, data.SalesVolume, data.DeleteTime)
 	}, seckillProductIdKey)
 	return ret, err
 }
@@ -96,7 +101,7 @@ func (m *defaultProductModel) Update(ctx context.Context, data *Product) error {
 	seckillProductIdKey := fmt.Sprintf("%s%v", cacheSeckillProductIdPrefix, data.Id)
 	_, err := m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
 		query := fmt.Sprintf("update %s set %s where `id` = ?", m.table, productRowsWithPlaceHolder)
-		return conn.ExecCtx(ctx, query, data.Name, data.Price, data.Stock, data.Image, data.Status, data.TypeId, data.SalesVolume, data.SpuId, data.Id)
+		return conn.ExecCtx(ctx, query, data.Name, data.Description, data.Price, data.Stock, data.Image, data.CategoryId, data.SpuId, data.Status, data.SalesVolume, data.DeleteTime, data.Id)
 	}, seckillProductIdKey)
 	return err
 }
