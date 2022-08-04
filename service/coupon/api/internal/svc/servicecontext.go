@@ -7,13 +7,13 @@ import (
 	"gorm.io/gorm/logger"
 	"gorm.io/gorm/schema"
 	"log"
-	"seckill/service/user/model"
-	"seckill/service/user/rpc/internal/config"
+	"seckill/service/coupon/api/internal/config"
+	"seckill/service/coupon/model"
 )
 
 type ServiceContext struct {
-	Config    config.Config
-	UserModel model.UserModel
+	Config                  config.Config
+	FullDiscountCouponModel model.FullDiscountCouponModel
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
@@ -25,15 +25,15 @@ func NewServiceContext(c config.Config) *ServiceContext {
 			SingularTable: true,
 		},
 	})
-	if err != nil {
-		log.Println(err)
-	}
 	cache := redis.NewClient(&redis.Options{
 		Addr: c.Redis.Host,
 		DB:   1,
 	})
+	if err != nil {
+		log.Println("Gorm open db failed")
+	}
 	return &ServiceContext{
-		Config:    c,
-		UserModel: model.NewUserModel(conn, cache),
+		Config:                  c,
+		FullDiscountCouponModel: model.NewFullDiscountCouponModel(conn, cache),
 	}
 }

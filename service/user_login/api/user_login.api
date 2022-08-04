@@ -1,0 +1,17 @@
+type (
+	LoginRequest {
+		PhoneNumber string `json:"phoneNumber"`
+		Password    string `json:"password"`
+	}
+
+	LoginResponse {
+		Id          int64  `json:"id"`
+		AuthorityId int64  `json:"authorityId"`
+		AccessToken string `json:"accessToken"`
+	}
+)
+
+service user_login-api {
+	@handler login
+	post /api/v1/user/login (LoginRequest) returns (LoginResponse)
+}

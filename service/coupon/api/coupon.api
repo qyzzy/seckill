@@ -1,0 +1,22 @@
+type (
+	AddCouponRequest {
+		Name           string `json:"name"`
+		WithAmount     int    `json:"withAmount"`
+		UsedAmount     int    `json:"usedAmount"`
+		Stock          int    `json:"stock"`
+		StartTime      int64  `json:"startTime"`
+		EndTime        int64  `json:"endTime"`
+		Status         int    `json:"status"`
+		ValidStartTime int64  `json:"validStartTime"`
+		ValidEndTime   int64  `json:"validEndTime"`
+	}
+
+	AddCouponResponse {
+		Id int64 `json:"id"`
+	}
+)
+
+service coupon-api {
+	@handler addCoupon
+	post /v1/coupon (AddCouponRequest) returns (AddCouponResponse)
+}

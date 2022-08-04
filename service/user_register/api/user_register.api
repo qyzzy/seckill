@@ -1,0 +1,21 @@
+type (
+	RegisterRequest {
+		Name        string `json:"name"`
+		PhoneNumber string `json:"phoneNumber"`
+		Password    string `json:"password"`
+		Age         int64  `json:"age"`
+		Gender      int64  `json:"gender"`
+		Avatar      string `json:"avatar"`
+	}
+
+	RegisterResponse {
+		Id          int64 `json:"id"`
+		AuthorityId int64 `json:"authorityId"`
+		Status      int64 `json:"status"`
+	}
+)
+
+service user-register-api {
+	@handler register
+	post /api/v1/user/register (RegisterRequest) returns (RegisterResponse)
+}

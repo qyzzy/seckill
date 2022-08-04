@@ -2,7 +2,6 @@ package logic
 
 import (
 	"context"
-	"fmt"
 	"seckill/service/user/model"
 
 	"seckill/service/user/rpc/internal/svc"
@@ -26,20 +25,24 @@ func NewRegisterLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Register
 }
 
 func (l *RegisterLogic) Register(in *user.RegisterRequest) (*user.RegisterResponse, error) {
-	newUser := &model.User{
+	uid, authorityId, status, err := l.svcCtx.UserModel.RegisterByPhoneNumber(l.ctx, &model.User{
 		Name:        in.Name,
 		PhoneNumber: in.PhoneNumber,
 		Password:    in.Password,
-		Age:         in.Age,
 		Avatar:      in.Avatar,
+		Age:         in.Age,
 		Gender:      in.Gender,
-	}
-	newUser.AuthorityId = 22
-	newUser.Status = 1
-	res, err := l.svcCtx.UserModel.Insert(l.ctx, newUser)
+		Status:      1,
+		AuthorityId: 22,
+	})
+
 	if err != nil {
 		return nil, err
 	}
-	fmt.Println(res)
-	return &user.RegisterResponse{}, nil
+
+	return &user.RegisterResponse{
+		Id:          uid,
+		AuthorityId: authorityId,
+		Status:      status,
+	}, nil
 }
