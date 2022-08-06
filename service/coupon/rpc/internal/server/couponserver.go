@@ -22,12 +22,12 @@ func NewCouponServer(svcCtx *svc.ServiceContext) *CouponServer {
 	}
 }
 
-func (s *CouponServer) FindCouponById(ctx context.Context, in *coupon.FindCouponRequest) (*coupon.FindCouponResponse, error) {
-	l := logic.NewFindCouponByIdLogic(ctx, s.svcCtx)
-	return l.FindCouponById(in)
+func (s *CouponServer) CreateCoupon(ctx context.Context, in *coupon.CreateCouponRequest) (*coupon.CreateCouponResponse, error) {
+	l := logic.NewCreateCouponLogic(ctx, s.svcCtx)
+	return l.CreateCoupon(in)
 }
 
-func (s *CouponServer) DeductStockById(ctx context.Context, in *coupon.DeductStockRequest) (*coupon.DeductStockResponse, error) {
-	l := logic.NewDeductStockByIdLogic(ctx, s.svcCtx)
-	return l.DeductStockById(in)
+func (s *CouponServer) UpdateCouponStatus(ctx context.Context, in *coupon.UpdateCouponStatusRequest) (*coupon.UpdateCouponStatusResponse, error) {
+	l := logic.NewUpdateCouponStatusLogic(ctx, s.svcCtx)
+	return l.UpdateCouponStatus(in)
 }

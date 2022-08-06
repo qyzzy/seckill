@@ -12,8 +12,8 @@ import (
 
 type (
 	Coupon interface {
-		FindCouponById(ctx context.Context, in *FindCouponRequest, opts ...grpc.CallOption) (*FindCouponResponse, error)
-		DeductStockById(ctx context.Context, in *DeductStockRequest, opts ...grpc.CallOption) (*DeductStockResponse, error)
+		CreateCoupon(ctx context.Context, in *CreateCouponRequest, opts ...grpc.CallOption) (*CreateCouponResponse, error)
+		UpdateCouponStatus(ctx context.Context, in *UpdateCouponStatusRequest, opts ...grpc.CallOption) (*UpdateCouponStatusResponse, error)
 	}
 
 	defaultCoupon struct {
@@ -27,12 +27,12 @@ func NewCoupon(cli zrpc.Client) Coupon {
 	}
 }
 
-func (m *defaultCoupon) FindCouponById(ctx context.Context, in *FindCouponRequest, opts ...grpc.CallOption) (*FindCouponResponse, error) {
+func (m *defaultCoupon) CreateCoupon(ctx context.Context, in *CreateCouponRequest, opts ...grpc.CallOption) (*CreateCouponResponse, error) {
 	client := NewCouponClient(m.cli.Conn())
-	return client.FindCouponById(ctx, in, opts...)
+	return client.CreateCoupon(ctx, in, opts...)
 }
 
-func (m *defaultCoupon) DeductStockById(ctx context.Context, in *DeductStockRequest, opts ...grpc.CallOption) (*DeductStockResponse, error) {
+func (m *defaultCoupon) UpdateCouponStatus(ctx context.Context, in *UpdateCouponStatusRequest, opts ...grpc.CallOption) (*UpdateCouponStatusResponse, error) {
 	client := NewCouponClient(m.cli.Conn())
-	return client.DeductStockById(ctx, in, opts...)
+	return client.UpdateCouponStatus(ctx, in, opts...)
 }

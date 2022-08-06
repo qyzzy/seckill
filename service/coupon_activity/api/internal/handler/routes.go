@@ -4,7 +4,7 @@ package handler
 import (
 	"net/http"
 
-	"seckill/service/coupon/api/internal/svc"
+	"seckill/service/coupon_activity/api/internal/svc"
 
 	"github.com/zeromicro/go-zero/rest"
 )
@@ -14,8 +14,8 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 		[]rest.Route{
 			{
 				Method:  http.MethodPost,
-				Path:    "/v1/coupon",
-				Handler: addCouponHandler(serverCtx),
+				Path:    "/api/v1/admin/activity/coupon",
+				Handler: coupon_activityHandler(serverCtx),
 			},
 		},
 	)

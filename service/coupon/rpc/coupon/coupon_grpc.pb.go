@@ -22,8 +22,8 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type CouponClient interface {
-	FindCouponById(ctx context.Context, in *FindCouponRequest, opts ...grpc.CallOption) (*FindCouponResponse, error)
-	DeductStockById(ctx context.Context, in *DeductStockRequest, opts ...grpc.CallOption) (*DeductStockResponse, error)
+	CreateCoupon(ctx context.Context, in *CreateCouponRequest, opts ...grpc.CallOption) (*CreateCouponResponse, error)
+	UpdateCouponStatus(ctx context.Context, in *UpdateCouponStatusRequest, opts ...grpc.CallOption) (*UpdateCouponStatusResponse, error)
 }
 
 type couponClient struct {
@@ -34,18 +34,18 @@ func NewCouponClient(cc grpc.ClientConnInterface) CouponClient {
 	return &couponClient{cc}
 }
 
-func (c *couponClient) FindCouponById(ctx context.Context, in *FindCouponRequest, opts ...grpc.CallOption) (*FindCouponResponse, error) {
-	out := new(FindCouponResponse)
-	err := c.cc.Invoke(ctx, "/coupon.coupon/findCouponById", in, out, opts...)
+func (c *couponClient) CreateCoupon(ctx context.Context, in *CreateCouponRequest, opts ...grpc.CallOption) (*CreateCouponResponse, error) {
+	out := new(CreateCouponResponse)
+	err := c.cc.Invoke(ctx, "/coupon.coupon/createCoupon", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *couponClient) DeductStockById(ctx context.Context, in *DeductStockRequest, opts ...grpc.CallOption) (*DeductStockResponse, error) {
-	out := new(DeductStockResponse)
-	err := c.cc.Invoke(ctx, "/coupon.coupon/deductStockById", in, out, opts...)
+func (c *couponClient) UpdateCouponStatus(ctx context.Context, in *UpdateCouponStatusRequest, opts ...grpc.CallOption) (*UpdateCouponStatusResponse, error) {
+	out := new(UpdateCouponStatusResponse)
+	err := c.cc.Invoke(ctx, "/coupon.coupon/updateCouponStatus", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -56,8 +56,8 @@ func (c *couponClient) DeductStockById(ctx context.Context, in *DeductStockReque
 // All implementations must embed UnimplementedCouponServer
 // for forward compatibility
 type CouponServer interface {
-	FindCouponById(context.Context, *FindCouponRequest) (*FindCouponResponse, error)
-	DeductStockById(context.Context, *DeductStockRequest) (*DeductStockResponse, error)
+	CreateCoupon(context.Context, *CreateCouponRequest) (*CreateCouponResponse, error)
+	UpdateCouponStatus(context.Context, *UpdateCouponStatusRequest) (*UpdateCouponStatusResponse, error)
 	mustEmbedUnimplementedCouponServer()
 }
 
@@ -65,11 +65,11 @@ type CouponServer interface {
 type UnimplementedCouponServer struct {
 }
 
-func (UnimplementedCouponServer) FindCouponById(context.Context, *FindCouponRequest) (*FindCouponResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method FindCouponById not implemented")
+func (UnimplementedCouponServer) CreateCoupon(context.Context, *CreateCouponRequest) (*CreateCouponResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateCoupon not implemented")
 }
-func (UnimplementedCouponServer) DeductStockById(context.Context, *DeductStockRequest) (*DeductStockResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method DeductStockById not implemented")
+func (UnimplementedCouponServer) UpdateCouponStatus(context.Context, *UpdateCouponStatusRequest) (*UpdateCouponStatusResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateCouponStatus not implemented")
 }
 func (UnimplementedCouponServer) mustEmbedUnimplementedCouponServer() {}
 
@@ -84,38 +84,38 @@ func RegisterCouponServer(s grpc.ServiceRegistrar, srv CouponServer) {
 	s.RegisterService(&Coupon_ServiceDesc, srv)
 }
 
-func _Coupon_FindCouponById_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(FindCouponRequest)
+func _Coupon_CreateCoupon_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateCouponRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(CouponServer).FindCouponById(ctx, in)
+		return srv.(CouponServer).CreateCoupon(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/coupon.coupon/findCouponById",
+		FullMethod: "/coupon.coupon/createCoupon",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CouponServer).FindCouponById(ctx, req.(*FindCouponRequest))
+		return srv.(CouponServer).CreateCoupon(ctx, req.(*CreateCouponRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Coupon_DeductStockById_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(DeductStockRequest)
+func _Coupon_UpdateCouponStatus_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateCouponStatusRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(CouponServer).DeductStockById(ctx, in)
+		return srv.(CouponServer).UpdateCouponStatus(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/coupon.coupon/deductStockById",
+		FullMethod: "/coupon.coupon/updateCouponStatus",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CouponServer).DeductStockById(ctx, req.(*DeductStockRequest))
+		return srv.(CouponServer).UpdateCouponStatus(ctx, req.(*UpdateCouponStatusRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -128,12 +128,12 @@ var Coupon_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*CouponServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "findCouponById",
-			Handler:    _Coupon_FindCouponById_Handler,
+			MethodName: "createCoupon",
+			Handler:    _Coupon_CreateCoupon_Handler,
 		},
 		{
-			MethodName: "deductStockById",
-			Handler:    _Coupon_DeductStockById_Handler,
+			MethodName: "updateCouponStatus",
+			Handler:    _Coupon_UpdateCouponStatus_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
