@@ -4,15 +4,15 @@ import (
 	"flag"
 	"fmt"
 
-	"seckill/service/coupon/api/internal/config"
-	"seckill/service/coupon/api/internal/handler"
-	"seckill/service/coupon/api/internal/svc"
+	"seckill/service/coupon_activity/api/internal/config"
+	"seckill/service/coupon_activity/api/internal/handler"
+	"seckill/service/coupon_activity/api/internal/svc"
 
 	"github.com/zeromicro/go-zero/core/conf"
 	"github.com/zeromicro/go-zero/rest"
 )
 
-var configFile = flag.String("f", "etc/coupon-api.yaml", "the config file")
+var configFile = flag.String("f", "etc/couponactivity-api.yaml", "the config file")
 
 func main() {
 	flag.Parse()
