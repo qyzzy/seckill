@@ -2,7 +2,6 @@ package logic
 
 import (
 	"context"
-
 	"seckill/service/coupon/api/internal/svc"
 	"seckill/service/coupon/api/internal/types"
 

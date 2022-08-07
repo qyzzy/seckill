@@ -55,9 +55,9 @@ func (m *defaultUserModel) RegisterByPhoneNumber(ctx context.Context, data *User
 	if err.Error() != "redis: nil" {
 		return 0, 0, 0, err
 	}
-	err = m.db.Transaction(func(tx *gorm.DB) error {
+	err = m.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
 		var resp *User
-		err := m.db.Table(m.tableName()).Select("phone_number").
+		err := m.db.Table(m.tableName()).
 			Where("phone_number = ?", data.PhoneNumber).
 			First(&resp).Error
 		if err.Error() != "record not found" {
@@ -75,7 +75,7 @@ func (m *defaultUserModel) RegisterByPhoneNumber(ctx context.Context, data *User
 	if err != nil {
 		return 0, 0, 0, err
 	}
-	res, err = m.cache.Set(ctx, seckillUserKey, data.ID, 60000).Result()
+	res, err = m.cache.WithContext(ctx).Set(ctx, seckillUserKey, data.ID, 60000).Result()
 	if err != nil {
 		return 0, 0, 0, err
 	}

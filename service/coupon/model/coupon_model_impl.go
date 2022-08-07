@@ -163,8 +163,9 @@ func (m *defaultCouponModel) AddCouponTakeCount(ctx context.Context, id int64) (
 
 	stock, _ := strconv.Atoi(res1)
 	takeCount, _ := strconv.Atoi(res2)
+
 	if stock < takeCount+1 {
-		return -1, err
+		return -1, fmt.Errorf("coupons have been collected")
 	}
 
 	_, err = m.cache.Incr(ctx, seckillCouponTakeCountKey).Result()
@@ -191,7 +192,7 @@ func (m *defaultCouponModel) AddCouponUsedCount(ctx context.Context, id int64) (
 	stock, _ := strconv.Atoi(res1)
 	usedCount, _ := strconv.Atoi(res2)
 	if stock < usedCount+1 {
-		return -1, err
+		return -1, fmt.Errorf("coupons have been collected")
 	}
 
 	_, err = m.cache.Incr(ctx, seckillCouponUsedCountKey).Result()
