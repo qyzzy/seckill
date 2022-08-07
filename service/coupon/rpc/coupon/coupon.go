@@ -14,6 +14,8 @@ type (
 	Coupon interface {
 		CreateCoupon(ctx context.Context, in *CreateCouponRequest, opts ...grpc.CallOption) (*CreateCouponResponse, error)
 		UpdateCouponStatus(ctx context.Context, in *UpdateCouponStatusRequest, opts ...grpc.CallOption) (*UpdateCouponStatusResponse, error)
+		AddCouponTakeCount(ctx context.Context, in *AddCouponTakeCountRequest, opts ...grpc.CallOption) (*AddCouponTakeCountResponse, error)
+		AddCouponUsedCount(ctx context.Context, in *AddCouponUsedCountRequest, opts ...grpc.CallOption) (*AddCouponUsedCountResponse, error)
 	}
 
 	defaultCoupon struct {
@@ -35,4 +37,14 @@ func (m *defaultCoupon) CreateCoupon(ctx context.Context, in *CreateCouponReques
 func (m *defaultCoupon) UpdateCouponStatus(ctx context.Context, in *UpdateCouponStatusRequest, opts ...grpc.CallOption) (*UpdateCouponStatusResponse, error) {
 	client := NewCouponClient(m.cli.Conn())
 	return client.UpdateCouponStatus(ctx, in, opts...)
+}
+
+func (m *defaultCoupon) AddCouponTakeCount(ctx context.Context, in *AddCouponTakeCountRequest, opts ...grpc.CallOption) (*AddCouponTakeCountResponse, error) {
+	client := NewCouponClient(m.cli.Conn())
+	return client.AddCouponTakeCount(ctx, in, opts...)
+}
+
+func (m *defaultCoupon) AddCouponUsedCount(ctx context.Context, in *AddCouponUsedCountRequest, opts ...grpc.CallOption) (*AddCouponUsedCountResponse, error) {
+	client := NewCouponClient(m.cli.Conn())
+	return client.AddCouponUsedCount(ctx, in, opts...)
 }

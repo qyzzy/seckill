@@ -24,6 +24,8 @@ const _ = grpc.SupportPackageIsVersion7
 type CouponClient interface {
 	CreateCoupon(ctx context.Context, in *CreateCouponRequest, opts ...grpc.CallOption) (*CreateCouponResponse, error)
 	UpdateCouponStatus(ctx context.Context, in *UpdateCouponStatusRequest, opts ...grpc.CallOption) (*UpdateCouponStatusResponse, error)
+	AddCouponTakeCount(ctx context.Context, in *AddCouponTakeCountRequest, opts ...grpc.CallOption) (*AddCouponTakeCountResponse, error)
+	AddCouponUsedCount(ctx context.Context, in *AddCouponUsedCountRequest, opts ...grpc.CallOption) (*AddCouponUsedCountResponse, error)
 }
 
 type couponClient struct {
@@ -52,12 +54,32 @@ func (c *couponClient) UpdateCouponStatus(ctx context.Context, in *UpdateCouponS
 	return out, nil
 }
 
+func (c *couponClient) AddCouponTakeCount(ctx context.Context, in *AddCouponTakeCountRequest, opts ...grpc.CallOption) (*AddCouponTakeCountResponse, error) {
+	out := new(AddCouponTakeCountResponse)
+	err := c.cc.Invoke(ctx, "/coupon.coupon/addCouponTakeCount", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *couponClient) AddCouponUsedCount(ctx context.Context, in *AddCouponUsedCountRequest, opts ...grpc.CallOption) (*AddCouponUsedCountResponse, error) {
+	out := new(AddCouponUsedCountResponse)
+	err := c.cc.Invoke(ctx, "/coupon.coupon/addCouponUsedCount", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // CouponServer is the server API for Coupon service.
 // All implementations must embed UnimplementedCouponServer
 // for forward compatibility
 type CouponServer interface {
 	CreateCoupon(context.Context, *CreateCouponRequest) (*CreateCouponResponse, error)
 	UpdateCouponStatus(context.Context, *UpdateCouponStatusRequest) (*UpdateCouponStatusResponse, error)
+	AddCouponTakeCount(context.Context, *AddCouponTakeCountRequest) (*AddCouponTakeCountResponse, error)
+	AddCouponUsedCount(context.Context, *AddCouponUsedCountRequest) (*AddCouponUsedCountResponse, error)
 	mustEmbedUnimplementedCouponServer()
 }
 
@@ -70,6 +92,12 @@ func (UnimplementedCouponServer) CreateCoupon(context.Context, *CreateCouponRequ
 }
 func (UnimplementedCouponServer) UpdateCouponStatus(context.Context, *UpdateCouponStatusRequest) (*UpdateCouponStatusResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateCouponStatus not implemented")
+}
+func (UnimplementedCouponServer) AddCouponTakeCount(context.Context, *AddCouponTakeCountRequest) (*AddCouponTakeCountResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AddCouponTakeCount not implemented")
+}
+func (UnimplementedCouponServer) AddCouponUsedCount(context.Context, *AddCouponUsedCountRequest) (*AddCouponUsedCountResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AddCouponUsedCount not implemented")
 }
 func (UnimplementedCouponServer) mustEmbedUnimplementedCouponServer() {}
 
@@ -120,6 +148,42 @@ func _Coupon_UpdateCouponStatus_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Coupon_AddCouponTakeCount_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AddCouponTakeCountRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CouponServer).AddCouponTakeCount(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/coupon.coupon/addCouponTakeCount",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CouponServer).AddCouponTakeCount(ctx, req.(*AddCouponTakeCountRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Coupon_AddCouponUsedCount_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AddCouponUsedCountRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CouponServer).AddCouponUsedCount(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/coupon.coupon/addCouponUsedCount",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CouponServer).AddCouponUsedCount(ctx, req.(*AddCouponUsedCountRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Coupon_ServiceDesc is the grpc.ServiceDesc for Coupon service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -134,6 +198,14 @@ var Coupon_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "updateCouponStatus",
 			Handler:    _Coupon_UpdateCouponStatus_Handler,
+		},
+		{
+			MethodName: "addCouponTakeCount",
+			Handler:    _Coupon_AddCouponTakeCount_Handler,
+		},
+		{
+			MethodName: "addCouponUsedCount",
+			Handler:    _Coupon_AddCouponUsedCount_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

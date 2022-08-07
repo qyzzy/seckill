@@ -38,7 +38,25 @@ message UpdateCouponStatusResponse {
   int64 usedCount = 5;
 }
 
+message AddCouponTakeCountRequest {
+  int64 id = 1;
+}
+
+message AddCouponTakeCountResponse {
+  int64 takeCount = 1;
+}
+
+message AddCouponUsedCountRequest {
+  int64 id = 1;
+}
+
+message AddCouponUsedCountResponse {
+  int64 usedCount = 1;
+}
+
 service coupon {
   rpc createCoupon(CreateCouponRequest) returns(CreateCouponResponse);
   rpc updateCouponStatus(UpdateCouponStatusRequest) returns(UpdateCouponStatusResponse);
+  rpc addCouponTakeCount(AddCouponTakeCountRequest) returns(AddCouponTakeCountResponse);
+  rpc addCouponUsedCount(AddCouponUsedCountRequest) returns(AddCouponUsedCountResponse);
 }

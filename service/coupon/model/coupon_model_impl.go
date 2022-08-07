@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"github.com/go-redis/redis/v8"
 	"gorm.io/gorm"
+	"strconv"
 	"time"
 )
 
@@ -17,6 +18,8 @@ type (
 	couponModel interface {
 		CreateCoupon(ctx context.Context, data *Coupon) (int64, error)
 		FindOne(ctx context.Context, id int64) (*Coupon, error)
+		AddCouponTakeCount(ctx context.Context, id int64) (int64, error)
+		AddCouponUsedCount(ctx context.Context, id int64) (int64, error)
 	}
 
 	defaultCouponModel struct {
@@ -30,7 +33,7 @@ type (
 		Name string `gorm:"not null"`
 		// 1: fullDiscountCoupon 2: singleProductCoupon 3: productsCoupon 10: noThresholdCoupon
 		TypeId int64 `gorm:"not null"`
-		// 0: not mutex, stackable 1: mutex
+		// 0: not mutex, stackable with other coupon 1: mutex
 		IsMutex int64 `gorm:"noy null"`
 		// default all == 0
 		ProductId  int64
@@ -90,7 +93,7 @@ func (m *defaultCouponModel) CreateCoupon(ctx context.Context, data *Coupon) (in
 	seckillCouponKey := fmt.Sprintf("%s%v", cacheSeckillCouponIdPrefix, data.ID)
 	seckillCouponStockKey := seckillCouponKey + ":" + "stock:"
 	seckillCouponTakeCountKey := seckillCouponKey + ":" + "take_count:"
-	seckillCouponUsedCountKey := seckillCouponKey + ":" + "used_count"
+	seckillCouponUsedCountKey := seckillCouponKey + ":" + "used_count:"
 
 	// Search cache
 	jsonData, err := json.Marshal(&data)
@@ -133,7 +136,7 @@ func (m *defaultCouponModel) FindOne(ctx context.Context, id int64) (*Coupon, er
 			if err != nil {
 				return nil, err
 			} else {
-				return nil, fmt.Errorf("coupon not exists")
+				return coupon, nil
 			}
 		}
 		return nil, err
@@ -143,6 +146,60 @@ func (m *defaultCouponModel) FindOne(ctx context.Context, id int64) (*Coupon, er
 		return nil, err
 	}
 	return coupon, nil
+}
+
+func (m *defaultCouponModel) AddCouponTakeCount(ctx context.Context, id int64) (int64, error) {
+	seckillCouponStockKey := fmt.Sprintf("%s%v:stock:", cacheSeckillCouponIdPrefix, id)
+	seckillCouponTakeCountKey := fmt.Sprintf("%s%v:take_count:", cacheSeckillCouponIdPrefix, id)
+
+	res1, err := m.cache.Get(ctx, seckillCouponStockKey).Result()
+	if err != nil {
+		return -1, err
+	}
+	res2, err := m.cache.Get(ctx, seckillCouponTakeCountKey).Result()
+	if err != nil {
+		return -1, err
+	}
+
+	stock, _ := strconv.Atoi(res1)
+	takeCount, _ := strconv.Atoi(res2)
+	if stock < takeCount+1 {
+		return -1, err
+	}
+
+	_, err = m.cache.Incr(ctx, seckillCouponTakeCountKey).Result()
+	if err != nil {
+		return -1, err
+	}
+
+	return int64(takeCount + 1), err
+}
+
+func (m *defaultCouponModel) AddCouponUsedCount(ctx context.Context, id int64) (int64, error) {
+	seckillCouponStockKey := fmt.Sprintf("%s%v:stock:", cacheSeckillCouponIdPrefix, id)
+	seckillCouponUsedCountKey := fmt.Sprintf("%s%v:used_count:", cacheSeckillCouponIdPrefix, id)
+
+	res1, err := m.cache.Get(ctx, seckillCouponStockKey).Result()
+	if err != nil {
+		return -1, err
+	}
+	res2, err := m.cache.Get(ctx, seckillCouponUsedCountKey).Result()
+	if err != nil {
+		return -1, err
+	}
+
+	stock, _ := strconv.Atoi(res1)
+	usedCount, _ := strconv.Atoi(res2)
+	if stock < usedCount+1 {
+		return -1, err
+	}
+
+	_, err = m.cache.Incr(ctx, seckillCouponUsedCountKey).Result()
+	if err != nil {
+		return -1, err
+	}
+
+	return int64(usedCount + 1), err
 }
 
 func (m *defaultCouponModel) tableName() string {

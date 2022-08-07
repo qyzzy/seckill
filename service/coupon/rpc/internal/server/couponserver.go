@@ -31,3 +31,13 @@ func (s *CouponServer) UpdateCouponStatus(ctx context.Context, in *coupon.Update
 	l := logic.NewUpdateCouponStatusLogic(ctx, s.svcCtx)
 	return l.UpdateCouponStatus(in)
 }
+
+func (s *CouponServer) AddCouponTakeCount(ctx context.Context, in *coupon.AddCouponTakeCountRequest) (*coupon.AddCouponTakeCountResponse, error) {
+	l := logic.NewAddCouponTakeCountLogic(ctx, s.svcCtx)
+	return l.AddCouponTakeCount(in)
+}
+
+func (s *CouponServer) AddCouponUsedCount(ctx context.Context, in *coupon.AddCouponUsedCountRequest) (*coupon.AddCouponUsedCountResponse, error) {
+	l := logic.NewAddCouponUsedCountLogic(ctx, s.svcCtx)
+	return l.AddCouponUsedCount(in)
+}

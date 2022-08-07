@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"github.com/zeromicro/go-zero/core/logx"
 
 	"seckill/service/coupon/api/internal/config"
 	"seckill/service/coupon/api/internal/handler"
@@ -27,5 +28,8 @@ func main() {
 	handler.RegisterHandlers(server, ctx)
 
 	fmt.Printf("Starting server at %s:%d...\n", c.Host, c.Port)
+
+	logx.DisableStat()
+
 	server.Start()
 }
