@@ -1,0 +1,15 @@
+Name: user_coupon-api
+Host: 0.0.0.0
+Port: 8003
+Mysql:
+  DataSource: root:45568769zby@tcp(127.0.0.1:3306)/seckill
+Redis:
+  Host: 127.0.0.1:6379
+Auth:
+  AccessSecret: loveandshare
+  AccessExpire: 72000
+CouponRpc:
+  Etcd:
+    Hosts:
+      - 127.0.0.1:2379
+    Key: coupon.rpc

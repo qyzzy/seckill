@@ -1,0 +1,7 @@
+Name: coupon-api
+Host: 0.0.0.0
+Port: 2050
+Mysql:
+  DataSource: root:45568769zby@tcp(127.0.0.1:3306)/seckill
+Redis:
+  Host: 127.0.0.1:6379

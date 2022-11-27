@@ -1,0 +1,12 @@
+Name: user_login-api
+Host: 0.0.0.0
+Port: 8002
+UserRpc:
+  Etcd:
+    Hosts:
+      - 127.0.0.1:2379
+    Key: user.rpc
+Salt: 89jaequbcxi32
+Auth:
+  AccessSecret: loveandshare
+  AccessExpire: 72000

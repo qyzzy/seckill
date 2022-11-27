@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"github.com/zeromicro/go-zero/core/logx"
 
 	"seckill/service/user/rpc/internal/config"
 	"seckill/service/user/rpc/internal/server"
@@ -36,5 +37,6 @@ func main() {
 	defer s.Stop()
 
 	fmt.Printf("Starting rpc server at %s...\n", c.ListenOn)
+	logx.DisableStat()
 	s.Start()
 }

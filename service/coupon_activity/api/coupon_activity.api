@@ -1,0 +1,30 @@
+type (
+	CreateCouponActivityRequest {
+		ActivityName   string `json:"activityName"`
+		CouponName     string `json:"couponName"`
+		TypeId         int64 `json:"typeId"`
+		IsMutex        int64  `json:"isMutex"`
+		ProductId      int64  `json:"productId"`
+		ShopId         int64  `json:"shopId"`
+		CategoryId     int64  `json:"categoryId"`
+		WithAmount     int64  `json:"withAmount"`
+		UsedAmount     int64  `json:"usedAmount"`
+		Stock          int64  `json:"stock"`
+		ValidType      int64  `json:"validType"`
+		ValidDay       int64  `json:"validDay"`
+		ValidStartTime int64  `json:"validStartTime"`
+		ValidEndTime   int64  `json:"validEndTime"`
+		UpdateUserId   int64  `json:"updateUserId"`
+		Status         int64  `json:"status"`
+	}
+
+	CreateCouponActivityResponse {
+		ActivityId int64 `json:"activtyId"`
+		CouponId   int64 `json:"couponId"`
+	}
+)
+
+service coupon_activity-api {
+	@handler coupon_activity
+	post /api/v1/admin/activity/coupon (CreateCouponActivityRequest) returns (CreateCouponActivityResponse)
+}

@@ -2,7 +2,6 @@ package logic
 
 import (
 	"context"
-	"fmt"
 
 	"seckill/service/user/rpc/internal/svc"
 	"seckill/service/user/rpc/user"
@@ -25,13 +24,13 @@ func NewLoginLogic(ctx context.Context, svcCtx *svc.ServiceContext) *LoginLogic 
 }
 
 func (l *LoginLogic) Login(in *user.LoginRequest) (*user.LoginResponse, error) {
-	resp, err := l.svcCtx.UserModel.FindOneByPhoneNumber(l.ctx, in.PhoneNumber)
+	uid, authorityId, err := l.svcCtx.UserModel.Login(l.ctx, in.PhoneNumber, in.Password)
 	if err != nil {
 		return nil, err
 	}
-	fmt.Println(resp)
+
 	return &user.LoginResponse{
-		Id:          resp.Id,
-		AuthorityId: resp.AuthorityId,
+		Id:          uid,
+		AuthorityId: authorityId,
 	}, nil
 }

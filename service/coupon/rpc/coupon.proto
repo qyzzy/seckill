@@ -1,0 +1,62 @@
+syntax = "proto3";
+
+package coupon;
+
+option go_package = "./coupon";
+
+message CreateCouponRequest {
+  string name = 1;
+  int64 typeId = 2;
+  int64 isMutex = 3;
+  int64 productId = 4;
+  int64 shopId = 5;
+  int64 categoryId = 6;
+  int64 withAmount = 7;
+  int64 usedAmount = 8;
+  int64 stock = 9;
+  int64 validType = 10;
+  int64 validDay = 11;
+  int64 validStartTime = 12;
+  int64 validEndTime = 13;
+  int64 updateUserId = 14;
+  int64 status = 15;
+}
+
+message CreateCouponResponse {
+  int64 id = 1;
+}
+
+message UpdateCouponStatusRequest {
+  int64 status = 1;
+}
+
+message UpdateCouponStatusResponse {
+  int64 id = 1;
+  int64 status = 2;
+  int64 stock = 3;
+  int64 takeCount = 4;
+  int64 usedCount = 5;
+}
+
+message AddCouponTakeCountRequest {
+  int64 id = 1;
+}
+
+message AddCouponTakeCountResponse {
+  int64 takeCount = 1;
+}
+
+message AddCouponUsedCountRequest {
+  int64 id = 1;
+}
+
+message AddCouponUsedCountResponse {
+  int64 usedCount = 1;
+}
+
+service coupon {
+  rpc createCoupon(CreateCouponRequest) returns(CreateCouponResponse);
+  rpc updateCouponStatus(UpdateCouponStatusRequest) returns(UpdateCouponStatusResponse);
+  rpc addCouponTakeCount(AddCouponTakeCountRequest) returns(AddCouponTakeCountResponse);
+  rpc addCouponUsedCount(AddCouponUsedCountRequest) returns(AddCouponUsedCountResponse);
+}

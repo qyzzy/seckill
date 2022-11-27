@@ -1,0 +1,34 @@
+type (
+	NormalGetCouponRequest {
+		UserId   int64 `json:"userId"`
+		CouponId int64 `json:"couponId"`
+	}
+
+	NormalGetCouponResponse {
+		Uuid   string `json:"uuid"`
+		Status int64  `json:"status"`
+	}
+
+	GetUserCouponRequest {
+		Uuid string `path:"uuid"`
+	}
+
+	GetUserCouponResponse {
+		UserId   int64 `json:"userId"`
+		CouponId int64 `json:"couponId"`
+		Status   int64 `json:"status"`
+	}
+)
+
+@server(
+	jwt: Auth
+	middleware: Auth
+)
+
+service user_coupon-api {
+	@handler normalGetCoupon
+	post /api/v1/user/coupon (NormalGetCouponRequest) returns (NormalGetCouponResponse)
+	
+	@handler getUserCoupon
+	get /api/v1/user/coupon/:uuid (GetUserCouponRequest) returns (GetUserCouponResponse)
+}
