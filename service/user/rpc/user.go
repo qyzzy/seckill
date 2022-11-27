@@ -27,6 +27,10 @@ func main() {
 	ctx := svc.NewServiceContext(c)
 	svr := server.NewUserServer(ctx)
 
+	c.Log.Path = "/user"
+	c.Log.Mode = "file"
+	c.Log.
+
 	s := zrpc.MustNewServer(c.RpcServerConf, func(grpcServer *grpc.Server) {
 		user.RegisterUserServer(grpcServer, svr)
 
